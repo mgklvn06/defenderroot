@@ -1,29 +1,29 @@
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-    :class="scrolled ? 'bg-black/90 backdrop-blur border-b border-white/10' : 'bg-transparent'"
+    class="fixed top-0 left-0 right-0 z-50 transition-all duration-medium ease-enterprise"
+    :class="scrolled ? 'bg-primary/90 backdrop-blur-xl border-b border-border/70 shadow-[0_6px_24px_rgba(0,0,0,0.25)]' : 'bg-primary/60 backdrop-blur-lg border-b border-border/30'"
   >
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex h-20 items-center justify-between">
         <RouterLink
           to="/"
-          class="flex items-center gap-2 text-white font-semibold tracking-wide"
+          class="flex items-center gap-2 text-text-primary font-semibold tracking-wide"
         >
           <span class="text-lg">BinaryDefenders</span>
         </RouterLink>
 
         <!-- Desktop navigation -->
-        <nav class="hidden lg:flex items-center gap-8 text-sm text-gray-300">
-          <RouterLink class="nav-link" to="/services">Services</RouterLink>
-          <RouterLink class="nav-link" to="/case-studies">Work</RouterLink>
-          <RouterLink class="nav-link" to="/engagement-models">Engagement</RouterLink>
-          <RouterLink class="nav-link" to="/about">Why Us</RouterLink>
+        <nav class="hidden lg:flex items-center gap-8 text-sm text-text-secondary">
+          <RouterLink class="nav-link" active-class="nav-link-active" to="/services">Services</RouterLink>
+          <RouterLink class="nav-link" active-class="nav-link-active" to="/case-studies">Work</RouterLink>
+          <RouterLink class="nav-link" active-class="nav-link-active" to="/engagement-models">Engagement</RouterLink>
+          <RouterLink class="nav-link" active-class="nav-link-active" to="/about">Why Us</RouterLink>
         </nav>
 
         <div class="hidden lg:flex items-center gap-4">
           <RouterLink
             to="/contact"
-            class="px-5 py-2 rounded-lg bg-cyan-400 text-black font-medium hover:bg-cyan-300 transition"
+            class="btn-primary"
           >
             Talk to Experts
           </RouterLink>
@@ -31,7 +31,7 @@
 
         <!-- Mobile menu button -->
         <button
-          class="lg:hidden text-white"
+          class="lg:hidden text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-security/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md"
           aria-label="Open menu"
           @click="open = true"
         >
@@ -47,7 +47,7 @@
     <transition name="fade">
       <div
         v-if="open"
-        class="fixed inset-0 z-40 bg-black/70"
+        class="fixed inset-0 z-40 bg-background/70"
         @click="open = false"
       />
     </transition>
@@ -56,29 +56,29 @@
     <transition name="slide">
       <aside
         v-if="open"
-        class="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-black z-50 border-l border-white/10 flex flex-col"
+        class="fixed top-0 right-0 h-full w-[85%] max-w-sm bg-primary z-50 border-l border-border/60 flex flex-col"
       >
-        <div class="flex items-center justify-between px-6 py-5 border-b border-white/10">
-          <span class="text-white font-semibold">BinaryDefenders</span>
+        <div class="flex items-center justify-between px-6 py-5 border-b border-border/60">
+          <span class="text-text-primary font-semibold">BinaryDefenders</span>
           <button @click="open = false" aria-label="Close menu">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                 d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>
         </div>
 
-        <nav class="flex flex-col px-6 py-6 gap-6 text-gray-300">
-          <RouterLink @click="open = false" class="mobile-link" to="/services">Services</RouterLink>
-          <RouterLink @click="open = false" class="mobile-link" to="/case-studies">Case Studies</RouterLink>
-          <RouterLink @click="open = false" class="mobile-link" to="/engagement-models">Engagement Models</RouterLink>
-          <RouterLink @click="open = false" class="mobile-link" to="/about">Why Choose Us</RouterLink>
+        <nav class="flex flex-col px-6 py-6 gap-6 text-text-secondary">
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/services">Services</RouterLink>
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/case-studies">Case Studies</RouterLink>
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/engagement-models">Engagement Models</RouterLink>
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/about">Why Choose Us</RouterLink>
         </nav>
 
-        <div class="mt-auto px-6 py-6 border-t border-white/10">
+        <div class="mt-auto px-6 py-6 border-t border-border/60">
           <RouterLink
             to="/contact"
-            class="block w-full text-center px-5 py-3 rounded-lg bg-cyan-400 text-black font-medium"
+            class="block w-full text-center btn-primary"
             @click="open = false"
           >
             Talk to Experts
@@ -110,12 +110,23 @@ onUnmounted(() => {
 
 <style scoped>
 .nav-link {
+  display: inline-block;
   position: relative;
-  transition: color 0.2s ease;
+  transition: color 150ms ease-out, transform 150ms ease-out;
 }
 
 .nav-link:hover {
-  color: #22d3ee;
+  color: #2F6DF6;
+}
+
+.nav-link:active {
+  transform: scale(0.98);
+}
+
+.nav-link:focus-visible {
+  outline: 2px solid rgba(0, 182, 122, 0.6);
+  outline-offset: 4px;
+  border-radius: 4px;
 }
 
 .nav-link::after {
@@ -125,22 +136,49 @@ onUnmounted(() => {
   bottom: -4px;
   width: 0;
   height: 1px;
-  background: #22d3ee;
-  transition: width 0.25s ease;
+  background: #2F6DF6;
+  transition: width 250ms ease-out;
 }
 
 .nav-link:hover::after {
   width: 100%;
 }
 
+.nav-link-active {
+  color: #2F6DF6;
+}
+
+.nav-link-active::after {
+  width: 100%;
+}
+
 .mobile-link {
   font-size: 1rem;
   font-weight: 500;
+  transition: color 150ms ease-out, transform 150ms ease-out;
+}
+
+.mobile-link:hover {
+  color: #2F6DF6;
+}
+
+.mobile-link:active {
+  transform: scale(0.98);
+}
+
+.mobile-link:focus-visible {
+  outline: 2px solid rgba(0, 182, 122, 0.6);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+
+.mobile-link-active {
+  color: #2F6DF6;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.25s ease;
+  transition: opacity 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .fade-enter-from,
@@ -150,11 +188,12 @@ onUnmounted(() => {
 
 .slide-enter-active,
 .slide-leave-active {
-  transition: transform 0.3s ease;
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.55s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .slide-enter-from,
 .slide-leave-to {
   transform: translateX(100%);
+  opacity: 0;
 }
 </style>

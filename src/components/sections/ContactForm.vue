@@ -1,17 +1,29 @@
 <template>
-  <section class="relative py-24">
-    <div class="max-w-7xl mx-auto px-6">
-      <div class="grid lg:grid-cols-2 gap-16 items-start">
+  <section class="section-wrapper">
+    <div class="section-accent"></div>
+    <div class="relative max-w-7xl mx-auto px-6">
+      <div
+        ref="contentEl"
+        :class="[
+          'grid lg:grid-cols-2 gap-16 items-start transition-all duration-component ease-enterprise',
+          contentVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
+        ]"
+      >
 
         <!-- LEFT: LOCATION / CONTEXT CARD -->
         <aside
-          class="rounded-2xl border border-white/10 bg-linear-to-br from-black to-zinc-900 p-8 space-y-8"
+          class="card-base bg-gradient-to-br from-primary/80 to-card space-y-8"
         >
           <div>
+            <div class="icon-badge mb-4">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M21 8V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v1m18 0v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8m18 0l-9 6-9-6" />
+              </svg>
+            </div>
             <h2 class="text-3xl font-semibold text-white">
               Talk to Binary Defenders
             </h2>
-            <p class="mt-3 text-gray-400">
+            <p class="mt-3 text-text-secondary">
               Discuss security architecture, assessments, incident response,
               or long-term cybersecurity partnerships.
             </p>
@@ -19,37 +31,40 @@
 
           <div class="space-y-4 text-sm">
             <div>
-              <p class="text-gray-400">Headquarters</p>
+              <p class="text-text-secondary">Headquarters</p>
               <p class="text-white font-medium">
                 Nairobi, Kenya
               </p>
             </div>
 
             <div>
-              <p class="text-gray-400">Email</p>
+              <p class="text-text-secondary">Email</p>
               <p class="text-white font-medium">
                 security@binarydefenders.com
               </p>
             </div>
 
             <div>
-              <p class="text-gray-400">Response Time</p>
+              <p class="text-text-secondary">Response Time</p>
               <p class="text-white font-medium">
-                Under 24 hours for enterprise requests
+                Initial response within 24 hours
               </p>
             </div>
           </div>
 
-          <div class="pt-6 border-t border-white/10">
-            <p class="text-xs text-gray-500">
+          <div class="pt-6 border-t border-border/60">
+            <p class="text-xs text-text-secondary/70">
               All inquiries are confidential. NDA available upon request.
             </p>
           </div>
+          <p class="text-xs text-text-secondary/70">
+            Emergency response available by agreement.
+          </p>
         </aside>
 
         <!-- RIGHT: CONTACT FORM -->
         <div
-          class="rounded-2xl border border-white/10 bg-black p-10"
+          class="card-base bg-background/30 backdrop-blur p-10"
         >
           <form class="space-y-6">
             <div class="grid md:grid-cols-2 gap-6">
@@ -95,7 +110,7 @@
             <div class="pt-4">
               <button
                 type="submit"
-                class="w-full rounded-lg bg-cyan-400 py-3 text-black font-semibold hover:bg-cyan-300 transition"
+                class="w-full btn-primary"
               >
                 Submit Secure Inquiry
               </button>
@@ -109,6 +124,9 @@
 </template>
 
 <script setup>
+import { useReveal } from "@/composables/useReveal"
+
+const { el: contentEl, isVisible: contentVisible } = useReveal({ threshold: 0.2 })
 </script>
 
 <style scoped>
@@ -116,21 +134,28 @@
   display: block;
   margin-bottom: 0.4rem;
   font-size: 0.85rem;
-  color: #9ca3af;
+  color: #94A3B8;
+  font-weight: 500;
 }
 
 .form-input {
   width: 100%;
   padding: 0.75rem 0.9rem;
   border-radius: 0.6rem;
-  background: #050505;
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
+  background: #0B1623;
+  border: 1px solid #1F3B57;
+  color: #E6EDF5;
   font-size: 0.9rem;
+  transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 150ms ease-out;
+}
+
+.form-input:hover {
+  border-color: rgba(47, 109, 246, 0.35);
 }
 
 .form-input:focus {
   outline: none;
-  border-color: #22d3ee;
+  border-color: #00B67A;
+  box-shadow: 0 0 0 3px rgba(0, 182, 122, 0.25);
 }
 </style>

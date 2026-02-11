@@ -12,9 +12,11 @@ const routes = [
   { path: "/case-studies", component: CaseStudies },
   { path: "/engagement-models", component: EngagementModels },
   { path: "/contact", component: Contact },
-  {path: "/about",name: "About",
-  component: () => import("@/pages/About.vue"),
-}
+  {
+    path: "/about",
+    name: "About",
+    component: () => import("@/pages/About.vue"),
+  }
 
 ]
 

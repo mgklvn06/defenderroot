@@ -1,1 +1,142 @@
 @import "tailwindcss";
+@import "aos/dist/aos.css";
+
+/* Reduced Motion Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ============================= */
+/* BASE LAYER */
+/* ============================= */
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-[#0B1623] text-[#E6EDF5] font-sans;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.02'/%3E%3C/svg%3E");
+    z-index: -1;
+  }
+
+  hr {
+    border-color: #1F3B57;
+    opacity: 0.7;
+  }
+}
+
+/* Global motion */
+* {
+  transition-property: color, background-color, border-color, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-duration: 200ms;
+}
+
+/* ============================= */
+/* ANIMATIONS */
+/* ============================= */
+
+@keyframes subtlePulse {
+  0% { opacity: 0.12; }
+  50% { opacity: 0.18; }
+  100% { opacity: 0.12; }
+}
+
+.ambient-glow {
+  animation: subtlePulse 12s ease-in-out infinite;
+}
+
+@keyframes loading-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.loading {
+  animation: loading-pulse 1.5s ease-in-out infinite;
+}
+
+/* ============================= */
+/* COMPONENT LAYER */
+/* ============================= */
+
+@layer components {
+
+  /* Section Wrapper */
+  .section-wrapper {
+    @apply relative py-20 md:py-24 overflow-hidden bg-[#0F2A44];
+  }
+
+  .section-accent {
+    @apply absolute inset-0 bg-gradient-to-b from-[#2F6DF6]/10 to-transparent pointer-events-none;
+  }
+
+  /* Card System */
+  .card-base {
+    @apply rounded-2xl border border-[#1F3B57] bg-[#13273F]/90 p-8 space-y-6 shadow-[0_4px_20px_rgba(0,0,0,0.25)];
+  }
+
+  .card-hover {
+    @apply transition-all duration-200 ease-out hover:-translate-y-1 hover:shadow-[0_10px_30px_rgba(0,0,0,0.35)];
+  }
+
+  /* Buttons */
+  .btn-primary {
+    @apply rounded-lg bg-[#2F6DF6] px-6 py-3 text-white font-semibold
+           transition-all duration-200 ease-out
+           hover:bg-[#2F6DF6]/90 hover:scale-[1.02]
+           active:scale-[0.98]
+           focus-visible:outline-none
+           focus-visible:ring-2
+           focus-visible:ring-[#00B67A]/60
+           focus-visible:ring-offset-2
+           focus-visible:ring-offset-[#0B1623];
+  }
+
+  .btn-secondary {
+    @apply rounded-lg border border-[#1F3B57] bg-[#0F2A44]/40
+           px-6 py-3 text-[#E6EDF5] font-semibold
+           transition-all duration-200 ease-out
+           hover:border-[#2F6DF6]/40 hover:bg-[#13273F]
+           hover:scale-[1.02]
+           active:scale-[0.98]
+           focus-visible:outline-none
+           focus-visible:ring-2
+           focus-visible:ring-[#00B67A]/60
+           focus-visible:ring-offset-2
+           focus-visible:ring-offset-[#0B1623];
+  }
+
+  .text-gradient {
+    @apply bg-gradient-to-r from-[#E6EDF5] to-[#94A3B8] bg-clip-text text-transparent;
+  }
+
+  .icon-badge {
+    @apply flex h-10 w-10 items-center justify-center rounded-lg border border-[#1F3B57] bg-[#0F2A44]/40 text-[#2F6DF6];
+  }
+
+  .icon-badge svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+}

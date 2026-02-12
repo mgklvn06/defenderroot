@@ -7,7 +7,7 @@
         isVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
       ]"
     >
-      {{ value }}
+      {{ displayValue }}
     </div>
     <div
       ref="labelEl"
@@ -22,13 +22,21 @@
 </template>
 
 <script setup>
-import { onMounted, onBeforeUnmount } from "vue"
+import { onMounted, onBeforeUnmount, ref, watch } from "vue"
 import { useReveal } from "@/composables/useReveal"
 
 const props = defineProps({
   forceOnMount: {
     type: Boolean,
     default: false
+  },
+  value: {
+    type: String,
+    required: true
+  },
+  label: {
+    type: String,
+    required: true
   }
 })
 
@@ -36,6 +44,52 @@ const { el: valueEl, isVisible } = useReveal({ threshold: 0.3 })
 const { el: labelEl } = useReveal({ threshold: 0.3 })
 
 let onScroll = null
+const displayValue = ref(props.value)
+let hasAnimated = false
+
+const parseValue = (value) => {
+  const match = value.match(/^[0-9]+(\.[0-9]+)?/)
+  if (!match) return null
+  const raw = match[0]
+  return {
+    number: parseFloat(raw),
+    decimals: raw.includes(".") ? raw.split(".")[1].length : 0,
+    suffix: value.slice(raw.length)
+  }
+}
+
+const animateValue = () => {
+  if (hasAnimated) return
+  const parsed = parseValue(props.value)
+  if (!parsed) {
+    displayValue.value = props.value
+    return
+  }
+
+  hasAnimated = true
+  const { number, decimals, suffix } = parsed
+  const start = 0
+  const duration = 1500
+  const startTime = performance.now()
+
+  const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3)
+
+  const tick = (now) => {
+    const elapsed = now - startTime
+    const progress = Math.min(elapsed / duration, 1)
+    const eased = easeOutCubic(progress)
+    const current = start + (number - start) * eased
+    displayValue.value = `${current.toFixed(decimals)}${suffix}`
+
+    if (progress < 1) {
+      requestAnimationFrame(tick)
+    } else {
+      displayValue.value = props.value
+    }
+  }
+
+  requestAnimationFrame(tick)
+}
 
 const checkInView = () => {
   if (!valueEl.value || isVisible.value) return
@@ -43,6 +97,7 @@ const checkInView = () => {
   const inView = rect.top < window.innerHeight * 0.9 && rect.bottom > 0
   if (inView) {
     isVisible.value = true
+    animateValue()
     if (onScroll) {
       window.removeEventListener("scroll", onScroll)
       window.removeEventListener("resize", onScroll)
@@ -54,6 +109,7 @@ const checkInView = () => {
 onMounted(() => {
   if (props.forceOnMount) {
     isVisible.value = true
+    animateValue()
     return
   }
 
@@ -70,6 +126,12 @@ onBeforeUnmount(() => {
   if (onScroll) {
     window.removeEventListener("scroll", onScroll)
     window.removeEventListener("resize", onScroll)
+  }
+})
+
+watch(isVisible, (value) => {
+  if (value) {
+    animateValue()
   }
 })
 </script>

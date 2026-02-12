@@ -7,16 +7,6 @@ export function useReveal(options = {}) {
   let observer = null
 
   onMounted(() => {
-    const prefersReduced =
-      typeof window !== "undefined" &&
-      window.matchMedia &&
-      window.matchMedia("(prefers-reduced-motion: reduce)").matches
-
-    if (prefersReduced) {
-      isVisible.value = true
-      return
-    }
-
     if (typeof window === "undefined" || !("IntersectionObserver" in window)) {
       isVisible.value = true
       return

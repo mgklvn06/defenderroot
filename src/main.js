@@ -6,7 +6,7 @@ import './index.css'
 import router from './router/index.js'
 
 
-initSmoothScroll()
+const lenis = initSmoothScroll()
 const app = createApp(App)
 app.use(router)
 app.mount('#app')
@@ -17,6 +17,15 @@ AOS.init({
   once: true,
   offset: 120
 })
+
+document.body.classList.add('aos-ready')
+
+if (lenis && typeof lenis.on === 'function') {
+  lenis.on('scroll', () => {
+    AOS.refresh()
+    window.dispatchEvent(new Event('scroll'))
+  })
+}
 
 router.afterEach(() => {
   requestAnimationFrame(() => {

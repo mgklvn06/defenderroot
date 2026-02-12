@@ -1,7 +1,7 @@
 <template>
   <header
-    class="fixed top-0 left-0 right-0 z-50 transition-all duration-medium ease-enterprise"
-    :class="scrolled ? 'bg-primary/90 backdrop-blur-xl border-b border-border/70 shadow-[0_6px_24px_rgba(0,0,0,0.25)]' : 'bg-primary/60 backdrop-blur-lg border-b border-border/30'"
+    class="nav-shell fixed top-0 left-0 right-0 z-50 transition-all duration-medium ease-enterprise"
+    :class="scrolled ? 'bg-primary/90 backdrop-blur-xl nav-shadow-strong' : 'bg-primary/70 backdrop-blur-lg nav-shadow-soft'"
   >
     <div class="max-w-7xl mx-auto px-6">
       <div class="flex h-20 items-center justify-between">
@@ -31,8 +31,10 @@
 
         <!-- Mobile menu button -->
         <button
-          class="lg:hidden text-text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-security/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background rounded-md"
+          class="lg:hidden rounded-md text-text-primary transition-opacity duration-fast ease-enterprise focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-security/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+          :class="open ? 'opacity-0 pointer-events-none' : 'opacity-100'"
           aria-label="Open menu"
+          :aria-expanded="open"
           @click="open = true"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -70,9 +72,9 @@
 
         <nav class="flex flex-col px-6 py-6 gap-6 text-text-secondary">
           <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/services">Services</RouterLink>
-          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/case-studies">Case Studies</RouterLink>
-          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/engagement-models">Engagement Models</RouterLink>
-          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/about">Why Choose Us</RouterLink>
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/case-studies">Work</RouterLink>
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/engagement-models">Engagement</RouterLink>
+          <RouterLink @click="open = false" class="mobile-link" active-class="mobile-link-active" to="/about">Why Us</RouterLink>
         </nav>
 
         <div class="mt-auto px-6 py-6 border-t border-border/60">
@@ -90,25 +92,85 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onUnmounted } from "vue"
+import { ref, onMounted, onUnmounted, watch } from "vue"
+import { useRoute } from "vue-router"
 
 const open = ref(false)
 const scrolled = ref(false)
+const route = useRoute()
+
+let mediaQuery = null
 
 const onScroll = () => {
   scrolled.value = window.scrollY > 50
 }
 
+const onBreakpointChange = (event) => {
+  if (event.matches) {
+    open.value = false
+  }
+}
+
 onMounted(() => {
   window.addEventListener("scroll", onScroll)
+  onScroll()
+
+  mediaQuery = window.matchMedia("(min-width: 1024px)")
+  if (mediaQuery.addEventListener) {
+    mediaQuery.addEventListener("change", onBreakpointChange)
+  } else {
+    mediaQuery.addListener(onBreakpointChange)
+  }
 })
 
 onUnmounted(() => {
   window.removeEventListener("scroll", onScroll)
+  if (mediaQuery) {
+    if (mediaQuery.removeEventListener) {
+      mediaQuery.removeEventListener("change", onBreakpointChange)
+    } else {
+      mediaQuery.removeListener(onBreakpointChange)
+    }
+  }
+  document.body.style.overflow = ""
 })
+
+watch(open, (value) => {
+  document.body.style.overflow = value ? "hidden" : ""
+})
+
+watch(
+  () => route.fullPath,
+  () => {
+    open.value = false
+  }
+)
 </script>
 
 <style scoped>
+.nav-shell {
+  position: fixed;
+}
+
+.nav-shell::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 12px;
+  background: linear-gradient(to bottom, rgba(11, 22, 35, 0), rgba(11, 22, 35, 0.6));
+  pointer-events: none;
+}
+
+.nav-shadow-soft {
+  box-shadow: 0 12px 28px -18px rgba(0, 0, 0, 0.6);
+}
+
+.nav-shadow-strong {
+  box-shadow: 0 18px 36px -22px rgba(0, 0, 0, 0.7);
+}
+
 .nav-link {
   display: inline-block;
   position: relative;

@@ -30,9 +30,31 @@
           data-aos="fade-up"
           data-aos-delay="100"
         >
-          <h1 class="text-4xl sm:text-5xl font-extrabold text-white leading-tight">
-            Defend. Build. Fortify.<br />
-            <span class="headline-wave">Protect What Matters.</span>
+          <h1
+            class="text-4xl sm:text-5xl font-extrabold text-white leading-tight"
+            :aria-label="`${headlineLine1} ${headlineLine2}`"
+          >
+            <span class="wave-line" aria-hidden="true">
+              <span
+                v-for="(char, index) in headlineLine1Chars"
+                :key="`h1-${index}`"
+                class="wave-char"
+                :style="{ animationDelay: `${index * 40}ms` }"
+              >
+                {{ char }}
+              </span>
+            </span>
+            <br />
+            <span class="wave-line wave-accent" aria-hidden="true">
+              <span
+                v-for="(char, index) in headlineLine2Chars"
+                :key="`h2-${index}`"
+                class="wave-char"
+                :style="{ animationDelay: `${(headlineLine1Chars.length + index) * 40}ms` }"
+              >
+                {{ char }}
+              </span>
+            </span>
           </h1>
           <p class="mt-3 text-base text-text-secondary">
             Security By Design, Not By Accident.
@@ -97,26 +119,40 @@
 
 <script setup lang="ts">
 import Stat from "@/components/ui/Stat.vue"
+
+const headlineLine1 = "Defend. Build. Fortify."
+const headlineLine2 = "Protect What Matters."
+const headlineLine1Chars = headlineLine1.split("")
+const headlineLine2Chars = headlineLine2.split("")
 </script>
 
 <style scoped>
-.headline-wave {
-  background: linear-gradient(90deg, #2F6DF6 0%, #00B67A 50%, #2F6DF6 100%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  color: transparent;
-  animation: headlineWave 10s ease-in-out infinite;
+.wave-line {
+  display: inline-block;
+  white-space: pre-wrap;
 }
 
-@keyframes headlineWave {
-  0% {
-    background-position: 0% 50%;
+.wave-char {
+  display: inline-block;
+  animation: textWave 2.8s ease-in-out infinite;
+  will-change: transform;
+}
+
+.wave-accent .wave-char {
+  background: linear-gradient(90deg, #2F6DF6 0%, #00B67A 50%, #2F6DF6 100%);
+  background-size: 200% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@keyframes textWave {
+  0%,
+  100% {
+    transform: translateY(0);
   }
   50% {
-    background-position: 100% 50%;
-  }
-  100% {
-    background-position: 0% 50%;
+    transform: translateY(-6px);
   }
 }
 </style>

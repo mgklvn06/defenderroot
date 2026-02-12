@@ -1,17 +1,6 @@
 @import "tailwindcss";
 @import "aos/dist/aos.css";
 
-/* Reduced Motion Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  *,
-  *::before,
-  *::after {
-    animation: none !important;
-    transition: none !important;
-    scroll-behavior: auto !important;
-  }
-}
-
 /* ============================= */
 /* BASE LAYER */
 /* ============================= */
@@ -37,6 +26,11 @@
   hr {
     border-color: #1F3B57;
     opacity: 0.7;
+  }
+
+  body:not(.aos-ready) [data-aos] {
+    opacity: 1 !important;
+    transform: none !important;
   }
 }
 
@@ -68,6 +62,30 @@
 
 .loading {
   animation: loading-pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes headlineWave {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.headline-wave {
+  display: inline-block;
+  background: linear-gradient(90deg, #2F6DF6 0%, #00B67A 50%, #2F6DF6 100%);
+  background-size: 300% 100%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: headlineWave 6s linear infinite;
+  will-change: background-position;
 }
 
 /* ============================= */

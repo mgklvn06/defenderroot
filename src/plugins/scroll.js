@@ -12,4 +12,6 @@ export function initSmoothScroll() {
   }
 
   requestAnimationFrame(raf)
+
+  return lenis
 }

@@ -140,7 +140,7 @@
         v-if="props.sector === 'regulated'"
         ref="complianceEl"
         :class="[
-          'card-base card-hover bg-gradient-to-b from-card to-background/90 transition-all duration-component ease-enterprise',
+          'card-base card-hover bg-linear-to-b from-card to-background/90 transition-all duration-component ease-enterprise',
           complianceVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'
         ]"
       >
